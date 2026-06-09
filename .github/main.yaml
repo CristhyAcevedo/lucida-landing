@@ -1,0 +1,29 @@
+name: Despliegue Automatico de Lucida Tea
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Copiar los archivos de tu repositorio a la máquina virtual de GitHub
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      # 2. Configurar el entorno de Node.js en el servidor
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      # 3. Instalar la herramienta Surge de forma automática en GitHub
+      - name: Instalar Surge
+        run: npm install -g surge
+
+      # 4. Hacer el despliegue automático usando el Secret seguro
+      - name: Ejecutar Despliegue en Surge
+        run: surge . lucida-tea-cristhy.surge.sh --token ${{ secrets.SURGE_TOKEN }}
